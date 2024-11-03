@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>YouCode | Scrum Board</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+
+    <!-- ================== Bootstrap link ================== -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+        integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+        crossorigin="anonymous"></script>
+    <!-- ================== BEGIN core-css ================== -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+    <link href="assets/css/vendor.min.css" rel="stylesheet" />
+    <link href="assets/css/default/app.min.css" rel="stylesheet" />
+    <link href="assets/css/style.css" rel="stylesheet" />
+    <!-- ================== END core-css ================== -->
+
+    <!-- ================== sweetAlert link ================== -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</head>
+
+<body>
+    <!-- BEGIN #app -->
+    <div id="app" class="app-without-sidebar">
+        <!-- BEGIN #content -->
+        <div id="content" class="app-content main-style">
+            <div class="d-flex align-items-center mb-3">
+                <div>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="javascript:;">Home</a></li>
+                        <li class="breadcrumb-item active">Scrum Board</li>
+                    </ol>
+                    <h1 class="page-header mb-0">Scrum Board</h1>
+                </div>
+                <div class="ms-auto">
+                    <a href="#modal-task" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        <i class="fa fa-plus fa-lg me-2 ms-n2 text-success-900"></i> Add Task
+                    </a>
+                </div>
+            </div>
+
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form id="form-task">
+
+                            <div class="modal-header">
+                                <h5 class="modal-title">Add Task</h5>
+                                <a href="#" class="btn-close" data-bs-dismiss="modal"></a>
+                            </div>
+                            <div class="modal-body">
+                                <input type="hidden" id="task-id">
+                                <div class="mb-3">
+                                    <label class="form-label">Title</label>
+                                    <input type="text" class="form-control" id="task-title" required />
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Type</label>
+                                    <div class="ms-3">
+                                        <div class="form-check mb-1">
+                                            <input class="form-check-input" name="task-type" type="radio"
+                                                value="Feature" id="task-type-feature" required />
+                                            <label class="form-check-label" for="task-type-feature">Feature</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" name="task-type" type="radio" value="Bug"
+                                                id="task-type-bug" required />
+                                            <label class="form-check-label" for="task-type-bug">Bug</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Priority</label>
+                                    <select class="form-select" id="task-priority" required>
+                                        <option value="">Please select</option>
+                                        <option value="Low">Low</option>
+                                        <option value="Medium">Medium</option>
+                                        <option value="High">High</option>
+                                        <option value="Critical">Critical</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Status</label>
+                                    <select class="form-select" id="task-status" required>
+                                        <option value="">Please select</option>
+                                        <option value="To Do">To Do</option>
+                                        <option value="In Progress">In Progress</option>
+                                        <option value="Done">Done</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Date</label>
+                                    <input type="date" class="form-control" id="task-date" required />
+                                </div>
+                                <div class="mb-0">
+                                    <label class="form-label">Description</label>
+                                    <textarea class="form-control" rows="10" id="task-description" required></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <a href="#" class="btn btn-white" data-bs-dismiss="modal">Cancel</a>
+                                <button type="submit" name="delete" class="btn btn-danger task-action-btn"
+                                    id="task-delete-btn">Delete</button>
+                                <button type="submit" name="update" class="btn btn-warning task-action-btn"
+                                    id="task-update-btn">Update</button>
+                                <button type="submit" name="save" class="btn btn-primary task-action-btn"
+                                    id="task-save-btn" onclick="submitTask(event)">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xl-4 col-lg-6">
+                    <div class="panel panel-inverse">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">To Do <span id="to-do-tasks-count"></span></h4>
+                        </div>
+                        <div class="list-group list-group-flush rounded-bottom overflow-hidden panel-body p-0"
+                            id="to-do-tasks">
+                            
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-lg-6">
+                    <div class="panel panel-inverse">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">In Progress <span id="in-progress-tasks-count"></span></h4>
+                        </div>
+                        <div class="list-group list-group-flush rounded-bottom overflow-hidden panel-body p-0"
+                            id="in-progress-tasks">
+                        
+                        
+                        
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-lg-6">
+                    <div class="panel panel-inverse">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">Done <span id="done-tasks-count"></span></h4>
+                        </div>
+                        <div class="list-group list-group-flush rounded-bottom overflow-hidden panel-body p-0"
+                            id="done-tasks">
+                        
+                        
+                        
+                        </div>
+                        
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END #content -->
+
+        <!-- BEGIN scroll-top-btn -->
+        <a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top"
+            data-toggle="scroll-to-top">
+            <i class="fa fa-angle-up"></i>
+        </a>
+        <!-- END scroll-top-btn -->
+    </div>
+    <!-- END #app -->
+
+    <!-- ================== BEGIN core-js ================== -->
+    <script src="assets/js/script.js"></script>
+    <!-- ================== END core-js ================== -->
+</body>
+
+</html>

@@ -1,0 +1,18 @@
+.pace {
+    display: none;
+}
+
+.main-style {
+    min-height: 100vh;
+    background: url(../img/cover/cover-scrum-board.png) no-repeat fixed;
+    background-size: 360px;
+    background-position: right bottom;
+}
+
+.task-details-container {
+    border: 1px solid #e2d2d2;
+    border-radius: 4px;
+    padding: 10px;
+    margin: 5px 0;
+    background-color: #f9f9f9;
+  }
